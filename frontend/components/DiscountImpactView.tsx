@@ -54,14 +54,15 @@ export default function DashboardView() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    const API_URL = process.env.NEXT_PUBLIC_API_URL;
     const fetchData = async () => {
       try {
         const [c, s, d, l, n] = await Promise.all([
-          fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/charts`),
-          fetch(`${process.env.NEXT_PUBLIC_API_URL}api/subcategories`),
-          fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/top-discounts`),
-          fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/discount-margin-impact`),
-          fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/discount-margin-netimpact`)
+          fetch(`${API_URL}/api/charts`),
+          fetch(`${API_URL}api/subcategories`),
+          fetch(`${API_URL}/api/top-discounts`),
+          fetch(`${API_URL}/api/discount-margin-impact`),
+          fetch(`${API_URL}/api/discount-margin-netimpact`)
         ]);
 
 

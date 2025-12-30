@@ -35,13 +35,13 @@ export default function DashboardView() {
   const [charts, setCharts] = useState<ChartData | null>(null);
   const [mounted, setMounted] = useState(false);
 
-  
+
   useEffect(() => {
     const API_URL = process.env.NEXT_PUBLIC_API_URL;
     const fetchData = async () => {
       try {
         const [kpiRes, chartRes] = await Promise.all([
-          fetch(`$(${API_URL}/api/kpis`),
+          fetch(`$${API_URL}/api/kpis`),
           fetch(`${API_URL}/api/charts`), 
         ]);
               // Verificamos si las respuestas son correctas antes de convertirlas a JSON
