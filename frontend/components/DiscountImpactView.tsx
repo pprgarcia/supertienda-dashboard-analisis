@@ -53,11 +53,19 @@ export default function DashboardView() {
   const [netErosion, setNetErosion] = useState<NetDiscountImpactData | null>(null);
   const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
+
+  
+useEffect(() => {
     const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
     const fetchData = async () => {
+      if (!API_URL) return;
+
       try {
-        const [c, s, d, l, n] = await Promise.all([
+        console.log("⏳ Cargando datos de Descuentos...");
+
+        // Hacemos el fetch
+        const responses = await Promise.all([
           fetch(`${API_URL}/api/charts`),
           fetch(`${API_URL}/api/subcategories`),
           fetch(`${API_URL}/api/top-discounts`),
@@ -65,17 +73,40 @@ export default function DashboardView() {
           fetch(`${API_URL}/api/discount-margin-netimpact`)
         ]);
 
+        // Verificamos si alguna falló y avisamos cuál fue
+        const endpoints = ["Charts", "Subcategories", "TopDiscounts", "Impact", "NetImpact"];
+        responses.forEach((res, index) => {
+          if (!res.ok) console.error(`❌ Error en ${endpoints[index]}: ${res.status}`);
+        });
 
-        setCharts(await c.json());
-        setSubData(await s.json());
-        setDiscountProducts(await d.json());
-        setLossErosion(await l.json());
-        setNetErosion(await n.json());
+        // Si la primera (charts) o segunda fallan, detenemos, pero intentamos seguir si son errores menores
+        if (!responses[0].ok) throw new Error("Falló carga crítica de Charts");
+
+        // Convertimos a JSON uno por uno
+        const cData = await responses[0].json();
+        const sData = await responses[1].json();
+        const dData = await responses[2].json();
+        const lData = await responses[3].json();
+        const nData = await responses[4].json();
+
+        setCharts(cData);
+        setSubData(sData);
+        setDiscountProducts(dData);
+        setLossErosion(lData);
+        setNetErosion(nData);
+        
         setMounted(true);
-      } catch (e) { console.error("Error en la carga:", e); }
+        console.log("✅ Datos de Descuentos cargados correctamente");
+
+      } catch (e) { 
+        console.error("❌ Error CRÍTICO en la carga de Descuentos:", e); 
+      }
     };
+
     fetchData();
   }, []);
+
+
 
   // --- GUARDIA DE SEGURIDAD ---
   if (!mounted || !charts || !subData || !discountProducts || !lossErosion || !netErosion) {

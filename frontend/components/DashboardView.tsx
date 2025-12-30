@@ -35,27 +35,27 @@ export default function DashboardView() {
   const [charts, setCharts] = useState<ChartData | null>(null);
   const [mounted, setMounted] = useState(false);
 
-
-  useEffect(() => {
+useEffect(() => {
+    // 1. Definimos la URL y la función UNA SOLA VEZ
     const API_URL = process.env.NEXT_PUBLIC_API_URL;
-      
+
     const fetchData = async () => {
-      // Protección: Si no hay URL, avisamos en consola y paramos (evita el 404 HTML)
+      // Validación inicial
       if (!API_URL) {
-        console.error("⛔ ERROR CRÍTICO: No se encontró la variable de entorno NEXT_PUBLIC_API_URL");
+        console.error("⛔ ERROR: Falta la variable de entorno NEXT_PUBLIC_API_URL");
         return;
       }
 
-    const fetchData = async () => {
       try {
         const [kpiRes, chartRes] = await Promise.all([
           fetch(`${API_URL}/api/kpis`),
           fetch(`${API_URL}/api/charts`), 
         ]);
-              // Verificamos si las respuestas son correctas antes de convertirlas a JSON
-          if (!kpiRes.ok || !chartRes.ok) {
-            throw new Error('Una de las peticiones a la API falló');
-          }
+
+        // Verificamos respuesta exitosa
+        if (!kpiRes.ok || !chartRes.ok) {
+           throw new Error(`Error en API Dashboard: ${kpiRes.status} / ${chartRes.status}`);
+        }
 
         const kData = await kpiRes.json();
         const cData = await chartRes.json();
@@ -63,10 +63,13 @@ export default function DashboardView() {
         setKpis(kData);
         setCharts(cData);
         setMounted(true);
+
       } catch (e) {
-        console.error("Error cargando datos del dashboard:", e);
+        console.error("❌ Error cargando Dashboard:", e);
       }
     };
+
+    // 2. Ejecutamos la función
     fetchData();
   }, []);
 
