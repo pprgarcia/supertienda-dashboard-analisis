@@ -38,6 +38,14 @@ export default function DashboardView() {
 
   useEffect(() => {
     const API_URL = process.env.NEXT_PUBLIC_API_URL;
+      
+    const fetchData = async () => {
+      // Protección: Si no hay URL, avisamos en consola y paramos (evita el 404 HTML)
+      if (!API_URL) {
+        console.error("⛔ ERROR CRÍTICO: No se encontró la variable de entorno NEXT_PUBLIC_API_URL");
+        return;
+      }
+
     const fetchData = async () => {
       try {
         const [kpiRes, chartRes] = await Promise.all([

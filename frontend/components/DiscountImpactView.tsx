@@ -59,7 +59,7 @@ export default function DashboardView() {
       try {
         const [c, s, d, l, n] = await Promise.all([
           fetch(`${API_URL}/api/charts`),
-          fetch(`${API_URL}api/subcategories`),
+          fetch(`${API_URL}/api/subcategories`),
           fetch(`${API_URL}/api/top-discounts`),
           fetch(`${API_URL}/api/discount-margin-impact`),
           fetch(`${API_URL}/api/discount-margin-netimpact`)
