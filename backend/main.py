@@ -17,10 +17,16 @@ app.add_middleware(
 
 df_global = None
 
+
+@app.get("/")
+def read_root():
+    return {"mensaje": "¡API de SuperTienda funcionando correctamente! 🚀 Ve a /docs para ver la documentación."}
+
+
 @app.on_event("startup")
 def load_data():
     global df_global
-    path = "SuperTienda.csv"
+    path = "supertienda.csv"
     if not os.path.exists(path):
         print("ERROR: Archivo SuperTienda.csv no encontrado")
         return
