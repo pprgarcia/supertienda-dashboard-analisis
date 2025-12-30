@@ -41,7 +41,7 @@ export default function DashboardView() {
     const fetchData = async () => {
       try {
         const [kpiRes, chartRes] = await Promise.all([
-          fetch(`$${API_URL}/api/kpis`),
+          fetch(`${API_URL}/api/kpis`),
           fetch(`${API_URL}/api/charts`), 
         ]);
               // Verificamos si las respuestas son correctas antes de convertirlas a JSON
