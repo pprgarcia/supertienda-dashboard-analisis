@@ -3,8 +3,16 @@ from fastapi.middleware.cors import CORSMiddleware
 import pandas as pd
 import numpy as np
 import os
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+# 2. Agregar esta configuración
+origins = [
+    "http://localhost:3000",
+    "https://supertienda-dashboard-analisis.vercel.app", # <--- Tu URL de Vercel
+    "*" # (Opcional) Permite a todo el mundo (útil para pruebas)
+]
 
 # Configuración de CORS
 app.add_middleware(
