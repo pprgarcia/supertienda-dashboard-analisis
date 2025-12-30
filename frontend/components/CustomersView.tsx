@@ -46,7 +46,8 @@ export default function CustomersView() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/customers-analysis')
+    
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/customers-analysis`)
       .then(res => res.json())
       .then((json: CustomerAnalysisData) => {
         setData(json);

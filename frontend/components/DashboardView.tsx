@@ -35,14 +35,20 @@ export default function DashboardView() {
   const [charts, setCharts] = useState<ChartData | null>(null);
   const [mounted, setMounted] = useState(false);
 
+  
   useEffect(() => {
+    const API_URL = process.env.NEXT_PUBLIC_API_URL;
     const fetchData = async () => {
       try {
         const [kpiRes, chartRes] = await Promise.all([
-          fetch('http://127.0.0.1:8000/api/kpis'),
-          fetch('http://127.0.0.1:8000/api/charts'),
+          fetch(`$(${API_URL}/api/kpis`),
+          fetch(`${API_URL}/api/charts`), 
         ]);
-        
+              // Verificamos si las respuestas son correctas antes de convertirlas a JSON
+          if (!kpiRes.ok || !chartRes.ok) {
+            throw new Error('Una de las peticiones a la API falló');
+          }
+
         const kData = await kpiRes.json();
         const cData = await chartRes.json();
         
@@ -50,11 +56,12 @@ export default function DashboardView() {
         setCharts(cData);
         setMounted(true);
       } catch (e) {
-        console.error("Error en la carga del Cover:", e);
+        console.error("Error cargando datos del dashboard:", e);
       }
     };
     fetchData();
   }, []);
+
 
   if (!mounted || !kpis || !charts) return (
     <div className="flex items-center justify-center h-96">

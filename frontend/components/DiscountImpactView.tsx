@@ -57,11 +57,11 @@ export default function DashboardView() {
     const fetchData = async () => {
       try {
         const [c, s, d, l, n] = await Promise.all([
-          fetch('http://127.0.0.1:8000/api/charts'),
-          fetch('http://127.0.0.1:8000/api/subcategories'),
-          fetch('http://127.0.0.1:8000/api/top-discounts'),
-          fetch('http://127.0.0.1:8000/api/discount-margin-impact'),
-          fetch('http://127.0.0.1:8000/api/discount-margin-netimpact')
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/charts`),
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}api/subcategories`),
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/top-discounts`),
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/discount-margin-impact`),
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/discount-margin-netimpact`)
         ]);
 
 

@@ -27,7 +27,7 @@ export default function CountriesView() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/countries-analysis')
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/countries-analysis`)
       .then(res => res.json())
       .then((json: CountriesAnalysisData) => {
         setData(json);

@@ -42,7 +42,7 @@ export default function ProductsView() {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/products-analysis')
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products-analysis`)
       .then((res) => {
         if (!res.ok) throw new Error();
         return res.json();
